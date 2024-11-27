@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Home Page For Songs</title>
+</head>
+<body>
+<h1>Home Page For Songs</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Select</th>
+    <th>Track ID</th>
+    <th>Title</th>
+    <th>Genre</th>
+    <th>Release Year</th>
+    <th>Album</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="song : ${songs}">
+    <td><input type="radio" name="trackId" th:value="${song.trackId}" form="selectSongForm"></td>
+    <td th:text="${song.trackId}"></td>
+    <td th:text="${song.title}"></td>
+    <td th:text="${song.genre}"></td>
+    <td th:text="${song.releaseYear}"></td>
+    <td th:text="${song.album?.name}"></td>
+    <td>
+      <a th:href="@{/songs/edit-form/{id}(id=${song.id})}">Edit</a>
+      <form th:action="@{/songs/delete/{id}(id=${song.id})}" th:method="post" style="display:inline;">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit">Delete</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<a th:href="@{/songs/add-form}">Add New Song</a>
+<form id="selectSongForm" th:action="@{/songs/selected}" th:method="post">
+  <button type="submit">Select</button>
+</form>
+</body>
+</html>
